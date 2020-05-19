@@ -16,7 +16,7 @@ const blockSize = 1
 const playerSize = 1.64;
 
 const chunkWidth = 16
-const chunkHeight = 16
+const chunkHeight = 128
 
 const terrainTextureBlocksPerRow = 16
 
@@ -92,12 +92,13 @@ function UpdateChunk(chunk, scene, mat) {
 function CreateChunk(chunkOffset, scene, mat, chunkVoxels = [], mesh = new BABYLON.Mesh(`chunk_${chunkOffset.x}_${chunkOffset.z}`, scene), vertexData = new BABYLON.VertexData(), update = false) {
     let chunkMesh = new MeshData()
 
+    // Generate chunk voxels if not passed in function
     if (chunkVoxels.length == 0) {
         for (let x = 0; x < chunkWidth; x++) {
             for (let z = 0; z < chunkWidth; z++) {
                 for (let y = 0; y < chunkHeight; y++) {
-                    // let height = Math.floor(Math.random() * Math.floor(chunkHeight))
-                    let height = 0
+                    let height = Math.floor(Math.random() * Math.floor(chunkHeight))
+                    // let height = 0
 
                     if (y > height)
                         break
@@ -211,6 +212,7 @@ function CreateChunk(chunkOffset, scene, mat, chunkVoxels = [], mesh = new BABYL
 
     BABYLON.VertexData.ComputeNormals(chunkMesh.positions, chunkMesh.indices, chunkMesh.normals);
 
+    // Update chunk
     if (update) {
         mesh.updateVerticesData(vertexData.positions, chunkMesh.positions)
         mesh.updateVerticesData(vertexData.indices, chunkMesh.indices)
